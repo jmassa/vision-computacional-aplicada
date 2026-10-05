@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visión Computacional Aplicada</title>
+<meta name="description" content="Grupo de Visión Computacional Aplicada — INTIA, Facultad de Ciencias Exactas, UNICEN, Tandil.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --surface:#ffffff; --ink:#1a1a1a; --muted:#4f5660; --line:#d9dce1;
+  --accent:#1f4e79; --accent-soft:#e8eef5; --hero-ink:#ffffff;
+  --shadow:none;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#121417; --surface:#1a1d21; --ink:#e9e7e1; --muted:#a2a9b1; --line:#2c3036;
+    --accent:#8fb6dd; --accent-soft:#1f2833; --shadow:none; }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Source Sans 3",system-ui,sans-serif}
+img{max-width:100%;display:block}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:"Source Serif 4",Georgia,serif;font-weight:600;line-height:1.2;margin:0}
+h2{font-size:clamp(1.5rem,2.6vw,1.9rem);margin-bottom:.6em;padding-bottom:.3em;border-bottom:1px solid var(--line)}
+h3{font-size:1.2rem}
+.eyebrow{font-size:.85rem;color:#d5dde6;margin-bottom:.6em}
+.lead{color:var(--muted);max-width:68ch;font-size:1.05rem}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;height:58px}
+nav .brand{font-family:"Source Serif 4",serif;font-weight:600;text-decoration:none;color:var(--ink);white-space:nowrap}
+nav ul{list-style:none;display:flex;gap:22px;margin:0;padding:0;overflow-x:auto}
+nav ul a{color:var(--muted);text-decoration:none;font-size:.92rem;white-space:nowrap}
+nav ul a:hover{color:var(--accent)}
+@media (max-width:760px){nav ul{display:none}}
+
+/* hero */
+.hero{position:relative;min-height:min(48vh,400px);display:flex;align-items:flex-end;color:var(--hero-ink);
+  background:#1f2a2a url(img/campus.jpg) center/cover no-repeat}
+.hero::before{content:"";position:absolute;inset:0;background:rgba(12,22,34,.72)}
+.hero .wrap{position:relative;padding-bottom:40px;padding-top:64px}
+.hero h1{font-size:clamp(2rem,4.5vw,3rem)}
+.hero p{max-width:70ch;font-size:1.05rem;color:#e6ebf0;margin:14px 0 0}
+.hero .inst{margin-top:18px;font-size:.9rem;color:#c3ccd6}
+
+section{padding:56px 0}
+section + section{border-top:1px solid var(--line)}
+
+/* stats */
+.facts{border-collapse:collapse;margin-top:24px;width:100%;max-width:720px;font-size:.98rem}
+.facts th,.facts td{text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.facts th{font-weight:600;width:42%;color:var(--ink)}
+.facts td{color:var(--muted)}
+.about-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:10px 32px;margin:24px 0 0;padding:0;list-style:none}
+.about-list li{padding-left:18px;position:relative;color:var(--muted)}
+.about-list li::before{content:"–";position:absolute;left:0;top:0;color:var(--muted)}
+.about-list strong{color:var(--ink);font-weight:600}
+
+/* historia */
+.project{border-left:3px solid var(--accent);padding:4px 0 4px 20px;margin-top:28px}
+.project h3{font-size:1.25rem}
+.project .meta{color:var(--muted);font-size:.9rem;margin:.3em 0 .9em}
+.project p{margin:.5em 0 0;color:var(--muted)}
+.chips{margin:10px 0 0;padding-left:1.3em;color:var(--muted)}
+.chips li{margin:2px 0}
+.timeline{list-style:none;margin:40px 0 0;padding:0;position:relative}
+.timeline::before{content:"";position:absolute;left:79px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.timeline>li{display:grid;grid-template-columns:80px 1fr;gap:28px;padding-bottom:28px;position:relative}
+.timeline>li::before{content:"";position:absolute;left:74px;top:7px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);left:75px}
+.timeline .year{font-family:"Source Serif 4",serif;font-weight:600;font-size:1.1rem;color:var(--accent);line-height:1.2;text-align:right;padding-right:14px}
+.timeline ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+.timeline ul li{color:var(--muted);font-size:.95rem}
+.timeline ul li strong{color:var(--ink);font-weight:600}
+.timeline cite{display:block;font-style:normal;font-size:.85rem;color:var(--muted);opacity:.85;margin-top:2px}
+@media (max-width:560px){
+  .timeline::before{left:5px}
+  .timeline>li{grid-template-columns:1fr;gap:6px;padding-left:28px}
+  .timeline>li::before{left:0}
+  .timeline .year{text-align:left;padding:0}
+}
+
+/* areas */
+.areas-head{display:flex;justify-content:space-between;align-items:end;gap:20px;flex-wrap:wrap}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filters button{font:inherit;font-size:.88rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:7px 14px;border-radius:4px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;margin-top:30px}
+@media (max-width:380px){.grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.card figure{margin:0;background:#fff;border-bottom:1px solid var(--line);aspect-ratio:16/9;overflow:hidden;cursor:zoom-in}
+.card figure img{width:100%;height:100%;object-fit:contain;padding:6px}
+.card .body{padding:18px 20px 22px}
+.tag{display:inline-block;font-size:.72rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.card p{margin:.5em 0 0;color:var(--muted);font-size:.95rem}
+.card[hidden]{display:none}
+
+
+/* people */
+.news{display:grid;gap:14px;margin-top:28px}
+.news-item{display:grid;grid-template-columns:120px 1fr;gap:20px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px 20px}
+.news-item time{font-family:"Source Serif 4",serif;color:var(--accent);font-size:1.05rem}
+.news-item h3{font-size:1.1rem}
+.news-item p{margin:.4em 0 0;color:var(--muted);font-size:.95rem}
+.news-empty{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px;color:var(--muted)}
+@media (max-width:560px){.news-item{grid-template-columns:1fr;gap:6px}}
+.people{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-top:30px}
+.person{display:flex;align-items:center;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+.avatar{flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:.9rem}
+.person small{display:block;color:var(--muted);font-size:.8rem}
+.logos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;margin:20px 0 0;padding:0;list-style:none}
+.logos li{display:flex;flex-direction:column;gap:8px}
+.logos .logo{display:grid;place-items:center;height:96px;padding:12px 14px;background:#fff;border:1px solid var(--line);border-radius:6px}
+.logos img{max-height:72px;max-width:100%;width:auto;height:auto;object-fit:contain}
+.logos small{font-size:.8rem;color:var(--muted);line-height:1.3;text-align:center}
+
+
+footer{padding:40px 0 56px;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+
+/* lightbox */
+dialog{border:0;padding:0;background:transparent;max-width:min(1200px,94vw)}
+dialog::backdrop{background:rgba(5,8,10,.85)}
+dialog img{border-radius:10px;max-height:82vh;width:auto;margin:auto;background:#fff}
+dialog p{color:#eee;text-align:center;margin:12px 0 0}
+dialog button{position:fixed;top:14px;right:18px;font-size:2rem;line-height:1;background:none;border:0;color:#fff;cursor:pointer}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#">Visión Computacional Aplicada</a>
+    <ul>
+      <li><a href="#grupo">El grupo</a></li>
+      <li><a href="#historia">Historia</a></li>
+      <li><a href="#lineas">Líneas</a></li>
+      <li><a href="#novedades">Novedades</a></li>
+      <li><a href="#integrantes">Integrantes</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Grupo de investigación · INTIA · UNICEN</div>
+    <h1>Visión Computacional Aplicada</h1>
+    <p>Procesamiento de imágenes y señales, aprendizaje automático y ciencia de datos, con aplicaciones en diagnóstico médico, agroindustria, teledetección e industria.</p>
+    <div class="inst">Instituto de Investigación en Tecnologías Informáticas Avanzadas (INTIA) · Facultad de Ciencias Exactas · Universidad Nacional del Centro de la Provincia de Buenos Aires · Tandil, Argentina</div>
+  </div>
+</header>
+
+<main>
+<section id="grupo">
+  <div class="wrap">
+    <h2>El grupo</h2>
+    <p class="lead">El grupo estudia y desarrolla métodos de extracción de información a partir de imágenes, señales y datos multidimensionales de gran volumen, y los aplica a problemas de asistencia al diagnóstico médico, producción agropecuaria y control industrial. Desarrolla actividades de investigación, docencia de grado y posgrado y transferencia tecnológica desde 1994.</p>
+    <table class="facts">
+      <tr><th>Inicio de la línea de investigación</th><td>1994</td></tr>
+      <tr><th>Tesis doctorales finalizadas</th><td>8 (6 en el grupo, 2 externas)</td></tr>
+      <tr><th>Publicaciones en revistas y congresos</th><td>25 en los últimos cinco años</td></tr>
+      <tr><th>Proyectos de transferencia</th><td>4</td></tr>
+    </table>
+    <ul class="about-list">
+      <li><strong>Equipo:</strong> 6 investigadores formados, 3 estudiantes de posgrado y 3 consultores externos.</li>
+      <li><strong>Formación de recursos humanos:</strong> pasantes y becarios de CONICET, Agencia I+D+i, CIC y otros organismos.</li>
+      <li><strong>Redes académicas:</strong> Escuela de Ciencias de las Imágenes, Doctorado en Imágenes Médicas y doctorados colaborativos con el exterior.</li>
+      <li><strong>Extensión:</strong> talleres y charlas de divulgación sobre visión computacional.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="historia">
+  <div class="wrap">
+    <h2>Historia</h2>
+    <p class="lead">Las líneas de investigación actuales se originan en los Proyectos de Incentivos «Bases de Datos y Procesamiento de Señales». En el período 2019–2021 se integraron en un proyecto común de ciencia de datos, radicado en el INTIA, Centro Asociado de la Comisión de Investigaciones Científicas de la Provincia de Buenos Aires (CIC). A partir de 2024 continúan en el proyecto «Visión Computacional Aplicada».</p>
+
+    <div class="project">
+      <h3>Desarrollo y aplicación de técnicas de extracción de información en Data Science</h3>
+      <div class="meta">Proyecto de Incentivos · 2019–2021 · INTIA, Facultad de Ciencias Exactas, UNICEN</div>
+      <p>Objetivo general: estudio, desarrollo y aplicación de técnicas de extracción de información en problemas de ciencia de datos caracterizados por su volumen, complejidad y heterogeneidad, mediante métodos de aprendizaje no supervisado (clustering) y supervisado (deep learning). Áreas de aplicación:</p>
+      <ol class="chips">
+        <li>Modelado y procesamiento de datos convencionales y no convencionales</li>
+        <li>Reuso semántico de modelos de requisitos</li>
+        <li>Clusterización en imágenes multidimensionales</li>
+        <li>Sistemas médicos de asistencia al diagnóstico y al tratamiento</li>
+        <li>Sistemas de información aplicados a la cadena productiva</li>
+      </ol>
+    </div>
+
+    <ol class="timeline">
+      <li><div class="year">1994</div><ul>
+        <li>Inicio de la línea de procesamiento de imágenes y señales en la Facultad de Ciencias Exactas, UNICEN.</li>
+      </ul></li>
+      <li><div class="year">2007</div><ul>
+        <li><strong>Cálculo de dosis en radioterapia.</strong> Reducción del tiempo de cálculo del efecto fotoeléctrico en la estimación de dosis absorbida.
+          <cite>Massa, Wainschenker, Doorn y Caselli. Journal of Physics: Conference Series 90, 012048.</cite></li>
+      </ul></li>
+      <li><div class="year">2009</div><ul>
+        <li><strong>Osteoporosis.</strong> Clasificación de patrones trabeculares del fémur proximal mediante el algoritmo de representación vectorial; análisis de radiografías de fémur con transformada wavelet.
+          <cite>Pecelis et al. World Congress on Medical Physics and Biomedical Engineering, Múnich · Santiago et al. SABI.</cite></li>
+        <li><strong>Sistemas de información geográfica.</strong> Evolución del desarrollo de SIG hacia herramientas de código abierto.
+          <cite>Tristán et al. ECImag, 2.ª Escuela y Workshop de Ciencias de las Imágenes.</cite></li>
+      </ul></li>
+      <li><div class="year">2010</div><ul>
+        <li><strong>Simulación Montecarlo.</strong> Estrategia paralela de bajo acoplamiento para el cálculo de dosis de radiación.
+          <cite>Massa, Doorn y Wainschenker. IEEE EMBC 2010, pp. 1771–1774.</cite></li>
+      </ul></li>
+      <li><div class="year">2012</div><ul>
+        <li>Tesis doctoral de José M. Massa sobre cálculo de dosis en radioterapia, bajo la dirección del Dr. Rubén Wainschenker.</li>
+        <li>Tesis doctoral de Paula Tristan, «Superresolución en imágenes satelitales» (Doctorado en Ciencias de la Computación, UNICEN), bajo la dirección del Dr. Rubén Wainschenker.</li>
+        <li>Convenio marco entre la UNICEN y el Hospital Italiano de Buenos Aires (Res. RJE 4751-12).</li>
+      </ul></li>
+      <li><div class="year">2015</div><ul>
+        <li><strong>Imágenes cardiovasculares.</strong> Medición semiautomática del espesor íntima-media carotídeo mediante contornos activos y análisis de textura.
+          <cite>Claret et al. International Conference on Machine Vision, Barcelona.</cite></li>
+      </ul></li>
+      <li><div class="year">2016</div><ul>
+        <li><strong>Ultrasonido intravascular (IVUS).</strong> Detección del borde del lumen con un clasificador basado en redes neuronales convolucionales, como resultado de una estadía de investigación en el Centro de Visión por Computador (Universitat de Barcelona).
+          <cite>Marone, Balocco, Bolaños, Massa y Radeva. CVII-STENT Workshop, MICCAI 2016, Atenas.</cite></li>
+        <li><strong>Rehabilitación cognitiva.</strong> Desarrollo de YART, herramienta interactiva elaborada en convenio con el Hospital Italiano de Buenos Aires (Res. RR 1097/16).
+          <cite>Menchón, Massa y Marone. SIPAIM 2016 · 45 JAIIO, SADIO.</cite></li>
+        <li><strong>Microscopía de fluorescencia.</strong> Identificación de la expresión de proteínas celulares.
+          <cite>Bordacahar, Casalini y Massa. SIPAIM 2016.</cite></li>
+      </ul></li>
+      <li><div class="year">2017</div><ul>
+        <li><strong>Densitometría ósea (DXA).</strong> Extracción de imágenes en formato RAW en el marco del convenio con el Instituto de Diagnóstico De Martino (Tandil).</li>
+        <li><strong>Dosimetría por fibra óptica.</strong> Estudio de la dependencia angular mediante simulación Montecarlo.
+          <cite>Martínez et al. Latin-American Symposium on Nuclear Physics and Applications, La Habana.</cite></li>
+        <li><strong>Síndrome de Bayès.</strong> Inicio de la colaboración con el equipo del Dr. Antoni Bayès de Luna para la digitalización de registros de ECG.</li>
+        <li>Herramienta de conteo de núcleos celulares basada en detección de objetos.</li>
+      </ul></li>
+      <li><div class="year">2018</div><ul>
+        <li><strong>FAUM.</strong> Publicación del algoritmo de agrupamiento rápido, autónomo y no supervisado para datos multidimensionales desarrollado en el grupo.
+          <cite>Curti y Wainschenker. Information Sciences 462, 182–203. doi:10.1016/j.ins.2018.06.008</cite></li>
+        <li>Digitalización de imágenes de ECG para la detección del síndrome de Bayès.
+          <cite>Franco, Escobar Robledo, Bayès de Luna y Massa. CACIC 2018.</cite></li>
+        <li>Comparación de alternativas de deep learning para el conteo de células en imágenes de fluorescencia multiespectrales de alta resolución.
+          <cite>Menchón et al. Machine Learning Summer School, Universidad Di Tella.</cite></li>
+        <li>Efectos de tamaño y respuesta angular de detectores centelladores de fibra óptica.
+          <cite>Martínez et al. 14th International Symposium on Radiation Physics, Córdoba.</cite></li>
+        <li>Aplicación del método vectorial a imágenes DXA e implementación de técnicas de alineamiento temporal en secuencias de video de actividades humanas.</li>
+      </ul></li>
+      <li><div class="year">2019–2021</div><ul>
+        <li><strong>Proyecto «Desarrollo y aplicación de técnicas de extracción de información en Data Science».</strong> Plan de trabajo: extensión de FAUM con órdenes de agrupamiento superiores y aplicación a la identificación de cubiertas de cultivo (en colaboración con INTA Pergamino); CNN para la caracterización trabecular y la microscopía de fluorescencia; detección del síndrome de Bayès; nuevos módulos de rehabilitación con el HIBA; detección de granos en tiempo real.</li>
+        <li><strong>Tesis de posgrado asociadas.</strong> L. Franco (síndrome de Bayès), N. Martínez (dosimetría de campos pequeños, con TU Dresden e IFAS), M. Menchón (rehabilitación cognitiva), M. Ridao (reuso semántico de requisitos) y J. Marone (imágenes médicas).</li>
+        <li>Clasificador automático de la calidad de granos de maíz.
+          <cite>Saleres, Tristan y Felice. 48 JAIIO, Congreso Argentino de Agroinformática, Salta, 2019.</cite></li>
+        <li>Herramienta interactiva de rehabilitación neurocognitiva.
+          <cite>Bonifacio, Menchón, González, Massa y Golimstok. XIV Jornadas de Informática en Salud, Hospital Italiano de Buenos Aires, 2019.</cite></li>
+      </ul></li>
+      <li><div class="year">2020</div><ul>
+        <li>Tesis doctoral de Nahuel Martínez (Doctorado en Física) sobre la dependencia angular de la dosis en detectores de tamaño reducido para dosimetría por fibra óptica, con co-dirección del Dr. José M. Massa, beca doctoral de CONICET y colaboración del IFAS y de la TU Dresden.</li>
+        <li><strong>Síndrome de Bayès.</strong> Métodos de agrupamiento de la onda P para la detección del síndrome.
+          <cite>Franco, Escobar, Massa y Bayès de Luna. 8.º CoNaIISI, UTN, San Francisco.</cite></li>
+        <li><strong>Caracterización trabecular.</strong> Métodos de textura para el hueso trabecular en imágenes DXA.
+          <cite>Gonzalez, Gilhaus, Massa, Caselli y De Martino. XXII Congreso Argentino de Bioingeniería (SABI), Piriápolis.</cite></li>
+        <li><strong>Patrones de comportamiento.</strong> Descubrimiento de patrones de comportamiento en secuencias de imágenes egocéntricas.
+          <cite>Menchón, Talavera, Massa y Radeva. 8th International Workshop on Assistive Computer Vision and Robotics, ECCV.</cite></li>
+        <li><strong>Reducción de speckle.</strong> Versión robusta del filtro de Lee aplicada a imágenes de sonar de barrido lateral.
+          <cite>Ferraggine y Villar. IEEE ARGENCON 2020.</cite></li>
+        <li><strong>DeepSeed.</strong> Proyecto finalista del Concurso Prendete.</li>
+      </ul></li>
+      <li><div class="year">2021</div><ul>
+        <li>Agrupamiento de características derivativas e integrativas de la onda P y aumento de datos para la detección del síndrome de Bayès.
+          <cite>Franco et al. SIPAIM 2021, Campinas · Congreso Argentino de Informática y Salud, 50 JAIIO.</cite></li>
+        <li>Clasificación de la calidad ósea en imágenes DXA con PyRadiomics y aprendizaje automático.
+          <cite>Gonzalez, Massa y De Martino. SIPAIM 2021, Campinas · VIII Congreso MACI, La Plata.</cite></li>
+        <li>Seguimiento de mirada para rehabilitación cognitiva.
+          <cite>Menchón, Golimstok y Massa. VIII Congreso MACI, La Plata.</cite></li>
+        <li><strong>DeepSeed.</strong> Aplicación multiplataforma para estimar la calidad de granos de maíz mediante deep learning.
+          <cite>Librandi, Corino, Tristan y Felice. XXVII CACIC, Salta · Ronda de negocios IB50K, CNEA.</cite></li>
+      </ul></li>
+      <li><div class="year">2022</div><ul>
+        <li>Clasificación de muestras DXA en rangos de TBS (<em>trabecular bone score</em>) mediante aprendizaje automático y PyRadiomics, en colaboración con el IDIM.
+          <cite>Gonzalez, Abdala, Sesta, Zanchetta y Massa. ASBMR 2022 Annual Meeting, Texas · Abdala et al. 5.º Congreso Argentino de Osteología AAOMM-SAO.</cite></li>
+        <li>Aumento de datos y agrupamiento de la onda P para la detección del síndrome de Bayès.
+          <cite>Franco et al. 10.º CoNaIISI, UTN, Concepción del Uruguay.</cite></li>
+      </ul></li>
+      <li><div class="year">2023</div><ul>
+        <li><strong>Patrones de comportamiento.</strong> Descubrimiento de patrones para el análisis del estilo de vida a partir de imágenes egocéntricas.
+          <cite>Menchón, Talavera, Massa y Radeva. Pervasive and Mobile Computing 95, 101846.</cite></li>
+        <li><strong>Dosimetría por fibra óptica.</strong> Dependencia angular en dosimetría con YVO<sub>4</sub>:Eu<sup>3+</sup>.
+          <cite>Martínez, Fernández, Machello, Molina, Massa y Santiago. Medical Physics.</cite></li>
+        <li>Método de agrupamiento jerárquico para la detección del síndrome de Bayès.
+          <cite>Franco, Escobar, Wainschenker, Bayès de Luna y Massa. 21st LACCEI International Multi-Conference, Buenos Aires.</cite></li>
+      </ul></li>
+      <li><div class="year">2024–2025</div><ul>
+        <li><strong>Proyecto «Visión Computacional Aplicada».</strong> Desarrollo de métodos de extracción de información a partir de imágenes y señales, con aplicaciones en medicina, agroindustria e industria. Integrantes: H. Curti, V. Ferraggine, M. Gonzalez, J. Marone, J. Massa, S. Torcida y P. Tristan; asesor externo: R. Wainschenker.</li>
+        <li><strong>Métodos de agrupamiento.</strong> Órdenes de agrupamiento dos y tres de FAUM (ajuste automático de parámetros, agrupamientos no lineales, análisis de vecindarios) y su aplicación a teledetección y a señales de ECG.</li>
+        <li><strong>Medicina.</strong> Herramienta de definición de geometrías para PENELOPE y simulación de detectores ópticamente estimulables; caracterización trabecular con ANN y CNN sobre imágenes DXA del Instituto De Martino y del IDIM, y su relación con diabetes y acromegalia; textura y reducción de speckle en ultrasonido de medicina veterinaria; aprendizaje automático para inmunohistoquímica (Facultad de Ciencias Veterinarias); caracterización polinomial de la onda P.</li>
+        <li><strong>Agroindustria.</strong> Detección, clasificación y cuantificación de enfermedades fúngicas en trigo y cebada con imágenes RGB de drones y firmas espectrales; cobertura de suelo, conteo de plantas y detección de malezas en papa; calidad de granos y logística de la cadena de suministro.</li>
+      </ul></li>
+    </ol>
+  </div>
+</section>
+
+<section id="lineas">
+  <div class="wrap">
+    <div class="areas-head">
+      <div>
+        <h2>Líneas de trabajo</h2>
+      </div>
+      <div class="filters" role="group" aria-label="Filtrar por área">
+        <button aria-pressed="true" data-f="all">Todas</button>
+        <button aria-pressed="false" data-f="metodos">Métodos</button>
+        <button aria-pressed="false" data-f="medicina">Medicina</button>
+        <button aria-pressed="false" data-f="agro">Agro y teledetección</button>
+        <button aria-pressed="false" data-f="industria">Industria</button>
+      </div>
+    </div>
+
+    <div class="grid" id="grid">
+      <article class="card" data-a="metodos">
+        <figure><img src="img/tandil-satelital.png" alt="Imagen satelital de Tandil" loading="lazy"></figure>
+        <div class="body"><span class="tag">Métodos</span><h3>FAUM: agrupamiento multidimensional</h3>
+          <p>Algoritmo de agrupamiento no supervisado desarrollado en el grupo para datos de cuatro o más dimensiones, como los píxeles de imágenes satelitales multibanda. El orden cero construye hiper-histogramas; el orden uno agrupa hiper-bines por proximidad. Los órdenes dos y tres, en desarrollo, incorporan ajuste automático de parámetros y agrupamientos no lineales.</p></div>
+      </article>
+      <article class="card" data-a="medicina">
+        <figure><img src="img/bayes.jpg" alt="Señales de ECG con detección de la onda P" loading="lazy"></figure>
+        <div class="body"><span class="tag">Medicina</span><h3>Diagnóstico del Síndrome de Bayès</h3>
+          <p>Digitalización de registros de ECG preservando la morfología de la onda P, y detección mediante procesamiento de señales, CNN y LSTM, sobre la base de datos aportada por el Dr. Antoni Bayès de Luna.</p></div>
+      </article>
+      <article class="card" data-a="medicina">
+        <figure><img src="img/microbiologia.jpg" alt="Imágenes de microscopía de fluorescencia y CNN" loading="lazy"></figure>
+        <div class="body"><span class="tag">Medicina</span><h3>Imágenes de microbiología</h3>
+          <p>Cuantificación de núcleos y proteínas en microscopía de fluorescencia multiespectral mediante redes convolucionales; herramientas de análisis inmunohistoquímico en colaboración con la Facultad de Ciencias Veterinarias.</p></div>
+      </article>
+      <article class="card" data-a="medicina">
+        <figure><img src="img/radioterapia.jpg" alt="Simulación Montecarlo de transporte de radiación" loading="lazy"></figure>
+        <div class="body"><span class="tag">Medicina</span><h3>Cálculo de dosis en radioterapia</h3>
+          <p>Simulación por el método de Montecarlo del transporte de radiación en material anatómico (del orden de 10⁹ fotones por simulación). Adaptación del código PENELOPE para detectores de campo pequeño.</p></div>
+      </article>
+      <article class="card" data-a="medicina">
+        <figure><img src="img/osteoporosis.jpg" alt="Textura de hueso trabecular sano y con osteoporosis" loading="lazy"></figure>
+        <div class="body"><span class="tag">Medicina</span><h3>Diagnóstico de osteoporosis</h3>
+          <p>Caracterización del hueso trabecular en imágenes DXA mediante descriptores radiómicos (PyRadiomics), aprendizaje automático y CNN, y su relación con enfermedades metabólicas.</p></div>
+      </article>
+      <article class="card" data-a="medicina">
+        <figure><img src="img/osteoporosis-segmentacion.jpg" alt="Segmentación de vértebras y cuello de fémur" loading="lazy"></figure>
+        <div class="body"><span class="tag">Medicina</span><h3>Segmentación ósea por IA</h3>
+          <p>Segmentación automática de vértebras L1–L4, cuello de fémur y triángulo de Ward; correlación con patologías y publicación de conjuntos de datos.</p></div>
+      </article>
+      <article class="card" data-a="medicina">
+        <figure><img src="img/comportamiento-rutinas.jpg" alt="Detección de rutinas en imágenes egocéntricas" loading="lazy"></figure>
+        <div class="body"><span class="tag">Medicina</span><h3>Patrones de comportamiento humano</h3>
+          <p>Detección de rutinas diarias a partir de imágenes egocéntricas, en colaboración con la Universitat de Barcelona, con aplicación en rehabilitación cognitiva.</p></div>
+      </article>
+      <article class="card" data-a="medicina">
+        <figure><img src="img/comportamiento-deteccion.jpg" alt="Detección de objetos, escenas y actividades" loading="lazy"></figure>
+        <div class="body"><span class="tag">Medicina</span><h3>Escenas, objetos y emociones</h3>
+          <p>Detección por imagen de objetos (YOLO), tipo de escena (VGG16), actividad (CNN específica), emociones, comidas e interacciones sociales.</p></div>
+      </article>
+      <article class="card" data-a="industria">
+        <figure><img src="img/fisuras.jpg" alt="Detección de fisuras en metales por ciclos de carga" loading="lazy"></figure>
+        <div class="body"><span class="tag">Industria</span><h3>Detección de fisuras en metales</h3>
+          <p>Detección y segmentación de fisuras y seguimiento de su crecimiento a lo largo de miles de ciclos de carga.</p></div>
+      </article>
+      <article class="card" data-a="agro">
+        <figure><img src="img/linea-costera.jpg" alt="Seguimiento de línea costera en imágenes satelitales" loading="lazy"></figure>
+        <div class="body"><span class="tag">Teledetección</span><h3>Seguimiento de línea costera</h3>
+          <p>Extracción de la línea de costa en series de imágenes satelitales, teniendo en cuenta el nivel de marea al momento de cada adquisición.</p></div>
+      </article>
+      <article class="card" data-a="agro">
+        <figure><img src="img/cubiertas-faum.jpg" alt="Imagen Landsat de Tandil y agrupamiento FAUM" loading="lazy"></figure>
+        <div class="body"><span class="tag">Teledetección</span><h3>Detección de cubiertas</h3>
+          <p>Agrupamiento FAUM sobre imágenes multibanda Landsat 7 de Tandil para identificar cubiertas de suelo y cultivos.</p></div>
+      </article>
+      <article class="card" data-a="agro">
+        <figure><img src="img/agroindustria.jpg" alt="Detección de surcos y malezas con drones" loading="lazy"></figure>
+        <div class="body"><span class="tag">Agro</span><h3>Aplicaciones en agroindustria</h3>
+          <p>Detección de surcos y malezas, estimación de cobertura de suelo y conteo de plantas de papa con imágenes de drones; enfermedades fúngicas en trigo y cebada; calidad y trazabilidad de granos.</p></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<section id="novedades">
+  <div class="wrap">
+    <h2>Novedades</h2>
+    <p class="lead">Publicaciones, tesis, participación en congresos y actividades de divulgación.</p>
+    <div class="news" id="news"></div>
+  </div>
+</section>
+
+<section id="integrantes">
+  <div class="wrap">
+    <h2>Integrantes</h2>
+    <div class="people" id="people"></div>
+
+    <h3 style="margin-top:48px">Instituciones</h3>
+    <ul class="logos">
+      <li><span class="logo"><img src="img/logos/unicen.png" alt="UNICEN" loading="lazy"></span><small>UNICEN</small></li>
+      <li><span class="logo"><img src="img/logos/exactas.png" alt="Facultad de Ciencias Exactas" loading="lazy"></span><small>Facultad de Ciencias Exactas</small></li>
+      <li><span class="logo"><img src="img/logos/intia.png" alt="INTIA" loading="lazy"></span><small>INTIA</small></li>
+      <li><span class="logo"><img src="img/logos/cic.png" alt="CIC Provincia de Buenos Aires" loading="lazy"></span><small>CIC Provincia de Buenos Aires</small></li>
+    </ul>
+
+    <h3 style="margin-top:40px">Colaboraciones</h3>
+    <ul class="logos">
+      <li><span class="logo"><img src="img/logos/barcelona.png" alt="Universitat de Barcelona" loading="lazy"></span><small>Universitat de Barcelona</small></li>
+      <li><span class="logo"><img src="img/logos/jaen.png" alt="Universidad de Jaén" loading="lazy"></span><small>Universidad de Jaén</small></li>
+      <li><span class="logo"><img src="img/logos/twente.png" alt="University of Twente" loading="lazy"></span><small>University of Twente</small></li>
+      <li><span class="logo"><img src="img/logos/kiel.png" alt="Christian-Albrechts-Universität zu Kiel" loading="lazy"></span><small>Christian-Albrechts-Universität zu Kiel</small></li>
+      <li><span class="logo"><img src="img/logos/dresden.png" alt="TU Dresden" loading="lazy"></span><small>TU Dresden</small></li>
+      <li><span class="logo"><img src="img/logos/helmholtz.png" alt="Helmholtz Munich" loading="lazy"></span><small>Helmholtz Munich</small></li>
+      <li><span class="logo"><img src="img/logos/uns.png" alt="Universidad Nacional del Sur" loading="lazy"></span><small>Universidad Nacional del Sur</small></li>
+      <li><span class="logo"><img src="img/logos/unmdp.png" alt="Universidad Nacional de Mar del Plata" loading="lazy"></span><small>Universidad Nacional de Mar del Plata</small></li>
+      <li><span class="logo"><img src="img/logos/veterinarias.png" alt="Facultad de Ciencias Veterinarias, UNICEN" loading="lazy"></span><small>Facultad de Ciencias Veterinarias, UNICEN</small></li>
+      <li><span class="logo"><img src="img/logos/hospital-italiano.png" alt="Hospital Italiano de Buenos Aires" loading="lazy"></span><small>Hospital Italiano de Buenos Aires</small></li>
+      <li><span class="logo"><img src="img/logos/hospital-aleman.png" alt="Hospital Alemán" loading="lazy"></span><small>Hospital Alemán</small></li>
+      <li><span class="logo"><img src="img/logos/santpau.png" alt="Hospital de la Santa Creu i Sant Pau" loading="lazy"></span><small>Hospital de la Santa Creu i Sant Pau</small></li>
+      <li><span class="logo"><img src="img/logos/idim.png" alt="IDIM" loading="lazy"></span><small>IDIM</small></li>
+      <li><span class="logo"><img src="img/logos/demartino.png" alt="De Martino Diagnóstico Médico" loading="lazy"></span><small>De Martino Diagnóstico Médico</small></li>
+      <li><span class="logo"><img src="img/logos/ifas.png" alt="IFAS, Instituto de Física Arroyo Seco" loading="lazy"></span><small>IFAS, Instituto de Física Arroyo Seco</small></li>
+      <li><span class="logo"><img src="img/logos/sadosky.png" alt="Fundación Sadosky" loading="lazy"></span><small>Fundación Sadosky</small></li>
+      <li><span class="logo"><img src="img/logos/anses.png" alt="ANSES" loading="lazy"></span><small>ANSES</small></li>
+    </ul>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">Visión Computacional Aplicada · INTIA, Facultad de Ciencias Exactas, UNICEN · Campus Universitario, Tandil, Argentina</div>
+</footer>
+
+<dialog id="lb"><button aria-label="Cerrar">×</button><img alt=""><p></p></dialog>
+
+<script>
+// Novedades: agregar una entrada por noticia, la más reciente primero.
+// Formato: {fecha:"AAAA-MM-DD", titulo:"...", texto:"...", enlace:"https://..." (opcional)}
+const novedades=[
+];
+const fmt=d=>new Date(d+"T12:00").toLocaleDateString("es-AR",{day:"numeric",month:"short",year:"numeric"});
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+document.getElementById("news").innerHTML=novedades.length
+  ? novedades.sort((a,b)=>b.fecha.localeCompare(a.fecha)).map(n=>`<article class="news-item"><time datetime="${n.fecha}">${fmt(n.fecha)}</time><div><h3>${esc(n.titulo)}</h3>${n.texto?`<p>${esc(n.texto)}</p>`:""}${n.enlace?`<p><a href="${esc(n.enlace)}" target="_blank" rel="noopener">Ver más</a></p>`:""}</div></article>`).join("")
+  : '<div class="news-empty">No hay novedades registradas.</div>';
+
+const people=[
+  ["Hugo Curti","Integrante"],["Viviana Ferraggine","Integrante"],["Mailen Gonzalez","Integrante"],
+  ["José Marone","Integrante"],["José Massa","Integrante"],["Paula Tristan","Integrante"],
+  ["Arnaldo Rubio Rivero","Becario"]];
+document.getElementById("people").innerHTML=people.map(([n,r])=>{
+  const ini=n.split(" ").map(w=>w[0]).join("");
+  return `<div class="person"><span class="avatar">${ini}</span><div>${n}<small>${r}</small></div></div>`}).join("");
+
+document.querySelectorAll(".filters button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".filters button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  const f=b.dataset.f;
+  document.querySelectorAll("#grid .card").forEach(c=>c.hidden=!(f==="all"||c.dataset.a===f));
+}));
+
+const lb=document.getElementById("lb");
+document.querySelectorAll(".card figure").forEach(fig=>fig.addEventListener("click",()=>{
+  const img=fig.querySelector("img");
+  lb.querySelector("img").src=img.src; lb.querySelector("img").alt=img.alt;
+  lb.querySelector("p").textContent=img.alt; lb.showModal();
+}));
+lb.addEventListener("click",e=>{ if(e.target!==lb.querySelector("img")) lb.close(); });
+</script>
+</body>
+</html>
